@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/framelayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.zeynep.bottombar.Fragments.FragmentOne"
+    android:orientation="vertical"
+    android:background="@drawable/r4">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+                <Button
+                    android:id="@+id/spinner2"
+                    android:layout_width="118dp"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:attr/colorActivatedHighlight"
+                    android:gravity="center"
+                    android:text="ET YEMEKLERİ"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.88"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.050000012" />
+
+                <Button
+                    android:id="@+id/döner"
+                    android:layout_width="118dp"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:attr/colorActivatedHighlight"
+                    android:gravity="center"
+                    android:text="DÖNER ÇEŞİTLERİ"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.88"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/spinner2"
+                    app:layout_constraintVertical_bias="0.050000012" />
+
+                <Button
+                    android:id="@+id/tatli"
+                    android:layout_width="118dp"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="100dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:attr/colorActivatedHighlight"
+                    android:gravity="center"
+                    android:text="TATLILAR"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.88"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/salata"
+                    app:layout_constraintVertical_bias="0.050000012" />
+
+                <Button
+                    android:id="@+id/salata"
+                    android:layout_width="118dp"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="180dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:attr/colorActivatedHighlight"
+                    android:gravity="center"
+                    android:text="SALATALAR"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.88"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/kahvalti"
+                    app:layout_constraintVertical_bias="0.050000012" />
+
+                <Button
+                    android:id="@+id/kahvalti"
+                    android:layout_width="118dp"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="264dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:attr/colorActivatedHighlight"
+                    android:gravity="center"
+                    android:text="KAHVALTI TABAĞI"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.88"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/döner"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <Button
+                    android:id="@+id/icecekler"
+                    android:layout_width="118dp"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="?android:attr/colorActivatedHighlight"
+                    android:gravity="center"
+                    android:text="İÇECEKLER"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.88"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tatli"
+                    app:layout_constraintVertical_bias="0.050000012" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+
+</FrameLayout>

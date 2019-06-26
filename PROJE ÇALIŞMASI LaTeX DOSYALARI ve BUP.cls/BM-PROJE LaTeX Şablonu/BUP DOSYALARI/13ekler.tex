@@ -1,0 +1,1600 @@
+\section{Ekler}
+
+
+\subsection{Veritabaný ve Android Studio Arasýndaki Baðlantýyý Saðlayan Php Kodlarý}\label{ss:1}
+\subsubsection{Personel Kaydý Çekme}\label{ss:1}
+kayit.php içerisinde  personel kaydýný çekmek için yazýlmýþ olan PHP kodlarý görülmektedir.
+
+<?php
+
+function sorgu(\$mail){
+
+	\$connect = mysqli\_connect("localhost","root","","restaurant");	
+	\$query2 = "SELECT * FROM `personel` WHERE mail='".\$mail."'";
+	
+	\$result=mysqli\_query(\$connect, \$query2);
+	
+	\$sayac=0;
+	
+	while(\$row = mysqli\_fetch\_assoc(\$result)){
+	
+		if(\$mail==\$row["mail"])
+		
+			return false;//var demek
+		else
+		
+		\$sayac=\$sayac+1;
+				
+	}
+	
+	if(\$sayac == 0)
+	
+		return true;
+		
+}
+
+
+function sorgu2(\$mail,\$sifre){
+
+	\$connect = mysqli\_connect("localhost","root","","restaurant");	
+	
+	\$query3 = "SELECT * FROM `personel` WHERE mail='".\$mail."'";
+	
+	\$result=mysqli\_query(\$connect, \$query3);
+	
+	\$sayac=0;
+	
+	while(\$row = mysqli\_fetch\_assoc(\$result)){
+	
+		if(\$sifre==\$row["sifre"])
+		
+			return false;//var demek
+		else
+		
+		\$sayac=\$sayac+1;	//yok demek	
+			
+	}
+	if(\$sayac == 1)
+	
+		return true;
+		
+}
+\$connect = mysqli\_connect("localhost","root","","restaurant");	
+	
+\$mail=\$\_POST['mail'];
+
+\$sifre=\$\_POST['sifre'];
+
+\$response=array();
+
+if(sorgu(\$mail)==false){
+
+
+	if(sorgu2(\$mail,\$sifre)==false){
+	
+	\$code="dogru";
+	
+	\$message="giris tamam";
+	
+	array\_push(\$response,array("code"=>\$code,"message"=>\$message));
+	
+	echo json\_encode(\$response);
+	
+
+	}
+	else if(sorgu2(\$mail,\$sifre)==true){
+	
+	\$code="yanlis";
+	
+	\$message="sifre yanlis";
+	
+	array\_push(\$response,array("code"=>\$code,"message"=>\$message));
+	
+	echo json\_encode(\$response);
+	
+	}	
+	
+}		
+
+else if(sorgu(\$mail)==true)
+
+{
+	\$code="yanlis";
+	
+	\$message="boyle bir kullanici yok";
+	
+	array\_push(\$response,array("code"=>\$code,"message"=>\$message));
+	
+	echo json\_encode(\$response);
+	
+}
+
+mysqli\_close(\$connect);
+
+?>
+
+\subsubsection{Ürün Çekme}\label{ss:1}
+urun\_cek.php içerisinde  müþterinin seçtiði kategoriye göre ürünleri çekmek için kullanýlmýþ Php kodlarý görülmektedir.
+
+<?php
+
+
+\$connect = mysqli\_connect("localhost","root","","restaurant");
+
+	
+
+\$kategori=\$\_POST['ktgr\_adi'];
+
+
+\$query3 ="SELECT * FROM `urunler` where kategori\_adi='\$kategori'";
+
+
+
+	\$result=mysqli\_query(\$connect, \$query3);
+	
+	\$response=array();
+	
+	while(\$row = mysqli\_fetch\_assoc(\$result)){
+	
+	\$urun\_id=\$row["urun\_id"];
+	
+	\$urun\_adi=\$row["urun\_adi"];
+	
+	\$kategori\_adi=\$row["kategori\_adi"];
+	
+	\$fiyat=\$row["fiyat"];
+	
+	array\_push(\$response,array("urun\_id"=>\$urun\_id,"urun\_adi"=>\$urun\_adi,
+	
+	"kategori\_adi"=>\$kategori\_adi,"fiyat"=>\$fiyat));
+		
+
+	}
+	
+	echo json\_encode(\$response);
+	
+	mysqli\_close(\$connect);
+
+?>
+
+\subsubsection{Fiyat Çekme}\label{ss:3}
+fiyat\_cek.php içerisinde  müþterinin seçtiði kategoriye göre ürünlerin fiyatlarýnýn toplamýný çekmek için kullanýlmýþ Php kodlarý görülmektedir.
+
+<?php
+\$connect = mysqli\_connect("localhost","root","","restaurant");	
+
+\$masano=\$\_POST['masano'];
+
+\$query3 ="SELECT * FROM `siparisler` where masano='\$masano'";
+
+\$result=mysqli\_query(\$connect, \$query3);
+
+	\$response=array();
+	
+	
+	while(\$row = mysqli\_fetch\_assoc(\$result)){
+	
+	\$siparisdetay=\$row["siparisdetay"];
+	
+	\$toplamtutar=\$row["toplamtutar"];
+	
+		array\_push(\$response,array("toplamtutar"=>\$toplamtutar,"siparisdetay"=>\$siparisdetay));
+			
+
+	}
+	echo json\_encode(\$response);
+
+
+
+	mysqli\_close(\$connect);
+
+
+?>
+
+\subsubsection{Sipariþ Çekme}\label{ss:3}
+siparis\_cek.php içerisinde  müþterinin seçtiði masa numarasýna göre sadece personelin eriþebildiði kýsma ekler.Ve personel masa numarasýna týkladýðý zaman o masanýn sipariþlerini çekmek için kullanýlan Php kodlarý gösterilmektedir.
+ 
+<?php
+
+\$connect = mysqli\_connect("localhost","root","","restaurant");
+
+	
+\$masano=\$\_POST['masano'];
+
+\$query3 ="SELECT * FROM `siparisler` where masano='\$masano'";
+
+\$result=mysqli\_query(\$connect, \$query3);
+
+	\$response=array();
+
+while(\$row = mysqli\_fetch\_assoc(\$result)){
+
+	\$siparisdetay=\$row["siparisdetay"];
+	
+	array\_push(\$response,array("siparisdetay"=>\$siparisdetay));	
+
+	}
+	
+	echo json\_encode(\$response);
+
+
+
+	mysqli\_close(\$connect);
+	
+?>
+
+
+\subsubsection{Sipariþ Ekleme}\label{ss:4}
+
+
+
+
+
+siparis\_ekle.php içerisinde  müþterinin seçtiði kategoriye göre ürünleri alýp ve veritabanýna kaydeden Php kodlarý gösterilmektedir.
+
+<?php
+
+\$connect = mysqli\_connect("localhost","root","","restaurant");	
+\$masano=\$\_POST['masano'];
+
+\$siparisdetay=\$\_POST['siparisdetay'];
+
+\$toplamtutar=\$\_POST['toplamtutar'];
+
+
+
+\$query = "INSERT INTO `siparisler` ( `masano`, `siparisdetay`, `toplamtutar`) VALUES ('".\$masano."','".\$siparisdetay."', '".\$toplamtutar."')";
+
+
+\$response=array();
+
+
+\$result=mysqli\_query(\$connect, \$query);
+
+
+if(\$result){
+
+	\$code="alýndý";
+	
+	\$message="sipariþiniz alýndý garsonu bekleyiniz";
+	
+	array\_push(\$response,array("code"=>\$code,"message"=>\$message));
+	
+	echo json\_encode(\$response);
+	
+
+}
+else{
+		\$code="alýnamadý";
+		
+	\$message="sipariþiniz alýnamadý garsonu çaðýrýnýz";
+	
+	array\_push(\$response,array("code"=>\$code,"message"=>\$message));
+	
+	echo json\_encode(\$response);
+	
+
+}
+
+
+
+?>
+\subsection{Uygulama Tasarým Kodlarý}\label{ss:2}
+\subsubsection{Projenin Ana Sayfasý Tasarýmý}
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout 
+
+xmlns:android="http://schemas.android.com/apk/res/android"
+    
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    
+    xmlns:tools="http://schemas.android.com/tools"
+    
+    android:id="@+id/container"
+    
+    android:layout\_width="match\_parent"
+    
+    android:layout\_height="match\_parent"    
+    
+    tools:context="com.example.zeynep.bottombar.Activitys.MainActivity">
+
+    
+    <android.support.design.widget.BottomNavigationView
+        
+        android:id="@+id/navigation"
+        
+        android:layout\_width="0dp"
+        
+        android:layout\_height="wrap\_content"
+        
+        android:layout\_marginEnd="0dp"
+        
+        android:layout\_marginStart="0dp"
+        
+        android:background="?android:attr/windowBackground"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintLeft\_toLeftOf="parent"
+        
+        app:layout\_constraintRight\_toRightOf="parent"
+        
+        app:menu="@menu/navigation" />
+
+    <FrameLayout
+    
+        android:id="@+id/fram"
+        android:layout\_width="match\_parent"
+        
+        android:layout\_height="match\_parent"
+        
+        android:layout\_marginBottom="55dp"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        tools:ignore="MissingConstraints" 
+        
+        />
+
+
+</android.support.constraint.ConstraintLayout>
+
+\subsubsection{Menü Sayfasý Tasarým Kodlarý}
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    
+    xmlns:tools="http://schemas.android.com/tools"
+    
+    android:id="@+id/framelayout"
+    
+    android:layout\_width="match\_parent"
+    android:layout\_height="match\_parent"
+    
+    tools:context="com.example.zeynep.bottombar.Fragments.FragmentOne"
+
+    android:orientation="vertical"
+    
+    android:background="@drawable/r4">
+
+
+        <android.support.constraint.ConstraintLayout
+            
+            android:layout\_width="match\_parent"
+            
+            android:layout\_height="match\_parent"
+            
+            android:visibility="visible">
+
+
+                <Button
+                
+                    android:id="@+id/spinner2"
+                    
+                    android:layout\_width="118dp"
+                    
+                    android:layout\_height="52dp"
+                    
+                    android:layout\_marginBottom="8dp"
+                    
+                    android:layout\_marginEnd="8dp"
+                    
+                    android:layout\_marginStart="8dp"
+                    
+                    android:layout\_marginTop="8dp"
+                    
+                    android:background="?android:attr/colorActivatedHighlight"
+                    
+                    android:gravity="center"
+                    
+                    android:text="ET YEMEKLERÝ"
+                    
+                    app:layout\_constraintBottom\_toBottomOf="parent"
+                    
+                    app:layout\_constraintEnd\_toEndOf="parent"
+                    
+                    app:layout\_constraintHorizontal\_bias="0.88"
+                    
+                    app:layout\_constraintStart\_toStartOf="parent"
+                    
+                    app:layout\_constraintTop\_toTopOf="parent"
+                    
+                    app:layout\_constraintVertical\_bias="0.050000012" />
+                    
+
+                <Button
+                
+                    android:id="@+id/döner"
+                    
+                    android:layout\_width="118dp"
+                    
+                    android:layout\_height="52dp"
+                    
+                    android:layout\_marginBottom="8dp"
+                    
+                    android:layout\_marginEnd="8dp"                                        
+                    
+                    android:layout\_marginStart="8dp"
+                    
+                    android:layout\_marginTop="8dp"
+                    
+                    android:background="?android:attr/colorActivatedHighlight"
+                    
+                    android:gravity="center"
+                    
+                    android:text="DÖNER ÇEÞÝTLERÝ"
+                    
+                    app:layout\_constraintBottom\_toBottomOf="parent"
+                    
+                    app:layout\_constraintEnd\_toEndOf="parent"
+                    
+                    app:layout\_constraintHorizontal\_bias="0.88"
+                    
+                    app:layout\_constraintStart\_toStartOf="parent"
+                    
+                    app:layout\_constraintTop\_toBottomOf="@+id/spinner2"
+                    
+                    app:layout\_constraintVertical\_bias="0.050000012" />
+                    
+
+                <Button
+                
+                    android:id="@+id/tatli"
+                    
+                    android:layout\_width="118dp"                                                            
+                    
+                    android:layout\_height="52dp"
+                    
+                    android:layout\_marginBottom="100dp"
+                    
+                    android:layout\_marginEnd="8dp"
+                    
+                    android:layout\_marginStart="8dp"
+                    
+                    android:layout\_marginTop="8dp"
+                    
+                    android:background="?android:attr/colorActivatedHighlight"
+                    
+                    android:gravity="center"
+                    
+                    android:text="TATLILAR"
+                    
+                    app:layout\_constraintBottom\_toBottomOf="parent"
+                    
+                    app:layout \_constraintEnd\_toEndOf="parent"
+                    
+                    app:layout\_constraintHorizontal\_bias="0.88"
+                    
+                    app:layout\_constraintStart\_toStartOf="parent"
+                    
+                    app:layout\_constraintTop\_toBottomOf="@+id/salata"
+                    
+                    app:layout\_constraintVertical\_bias="0.050000012" />
+                    
+
+                <Button
+                
+                    android:id="@+id/salata"
+                    
+                    android:layout\_width="118dp"
+                    
+                    android:layout\_height="52dp"
+                    
+                    android:layout\_marginBottom="180dp"
+                    
+                    android:layout\_marginEnd="8dp"
+                    
+                    android:layout\_marginStart="8dp"
+                    
+                    android:layout\_marginTop="8dp"
+                    
+                    android:background="?android:attr/colorActivatedHighlight"
+                    
+                    android:gravity="center"
+                    
+                    android:text="SALATALAR"
+                    
+                    app:layout\_constraintBottom\_toBottomOf="parent"
+                    
+                    app:layout\_constraintEnd\_toEndOf="parent"
+                    
+                    app:layout\_constraintHorizontal\_bias="0.88"                                        
+                    
+                    app:layout\_constraintStart\_toStartOf="parent"
+                    
+                    app:layout\_constraintTop\_toBottomOf="@+id/kahvalti"
+                    
+                    app:layout\_constraintVertical\_bias="0.050000012" />
+                    
+
+                <Button
+                
+                    android:id="@+id/kahvalti"
+                    
+                    android:layout\_width="118dp"
+                    
+                    android:layout\_height="52dp"
+                    
+                    android:layout\_marginBottom="264dp"
+                    
+                    android:layout\_marginEnd="8dp"
+                    
+                    android:layout\_marginStart="8dp"
+                    
+                    android:layout\_marginTop="8dp"
+                    
+                    android:background="?android:attr/colorActivatedHighlight"
+                    
+                    android:gravity="center"
+                    
+                    android:text="KAHVALTI TABAÐI"
+                
+                    app:layout\_constraintBottom\_toBottomOf="parent"
+                    
+                    app:layout\_constraintEnd\_toEndOf="parent"
+                    
+                    app:layout\_constraintHorizontal\_bias="0.88"
+                    
+                    app:layout\_constraintStart\_toStartOf="parent"
+                    
+                    app:layout\_constraintTop\_toBottomOf="@+id/döner"
+                    
+                    app:layout\_constraintVertical\_bias="0.0" />
+                    
+
+                <Button
+                
+                    android:id="@+id/icecekler"
+                    
+                    android:layout\_width="118dp"
+                    
+                    android:layout\_height="52dp"
+                    
+                    android:layout\_marginBottom="48dp"
+                    
+                    android:layout\_marginEnd="8dp"
+                    
+                    android:layout\_marginStart="8dp"
+                    
+                    android:layout\_marginTop="8dp"
+                    
+                    android:background="?android:attr/colorActivatedHighlight"
+                    
+                    android:gravity="center"
+                    
+                    android:text="ÝÇECEKLER"
+                    
+                    app:layout\_constraintBottom\_toBottomOf="parent"
+                    
+                    app:layout\_constraintEnd\_toEndOf="parent"
+                    
+                    app:layout\_constraintHorizontal\_bias="0.88"
+                    
+                    app:layout\_constraintStart\_toStartOf="parent"
+                    
+                    app:layout\_constraintTop\_toBottomOf="@+id/tatli"
+                    
+                    app:layout\_constraintVertical\_bias="0.050000012" />
+                    
+
+        </android.support.constraint.ConstraintLayout>
+
+
+
+</FrameLayout>
+
+\subsubsection{Ürün  Sayfasý Tasarým Kodlarý}
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView 
+
+xmlns:android="http://schemas.android.com/apk/res/android"
+    
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    
+    xmlns:tools="http://schemas.android.com/tools"
+    
+    android:layout\_width="match\_parent"
+    
+    android:layout\_height="150dp"
+    
+    android:layout\_margin="16dp"
+    
+    app:cardBackgroundColor="@android:color/holo\_orange\_light">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout\_width="match\_parent"
+        
+        android:layout\_height="match\_parent"
+        
+        android:background="\#a0522d"
+        
+        android:backgroundTint="@android:color/holo\_orange\_light">
+
+        <TextView
+        
+            android:id="@+id/urun\_adi"
+            
+            android:layout\_width="125dp"
+            
+            android:layout\_height="57dp"
+            
+            android:layout\_marginBottom="8dp"
+            
+            android:layout\_marginEnd="8dp"
+            
+            android:layout\_marginStart="8dp"
+            
+            android:layout\_marginTop="8dp"
+            
+            android:text="ürün adý"
+            
+            android:textColor="\#000"
+            
+            android:textSize="18sp"
+            
+            app:layout\_constraintBottom\_toBottomOf="parent"
+            
+            app:layout\_constraintEnd\_toEndOf="parent"
+            
+            app:layout\_constraintHorizontal\_bias="0.037"
+            
+            app:layout\_constraintStart\_toStartOf="parent"
+            
+            app:layout\_constraintTop\_toTopOf="parent"
+            
+            app:layout\_constraintVertical\_bias="0.506" />
+            
+
+        <Spinner
+        
+            android:id="@+id/spinner"
+            
+            android:layout\_width="67dp"
+            
+            android:layout\_height="21dp"
+            
+            android:layout\_marginBottom="8dp"
+            
+            android:layout\_marginEnd="8dp"
+            
+            android:layout\_marginStart="8dp"
+            
+            android:layout\_marginTop="8dp"
+            
+            app:layout\_constraintBottom\_toBottomOf="parent"
+            
+            app:layout\_constraintEnd\_toEndOf="parent"
+            
+            app:layout\_constraintHorizontal\_bias="0.74"
+            
+            app:layout\_constraintStart\_toStartOf="parent"
+            
+            app:layout\_constraintTop\_toTopOf="parent" />
+            
+
+        <TextView
+        
+            android:id="@+id/fiyat"
+            
+            android:layout\_width="49dp"
+            
+            android:layout\_height="19dp"
+            
+            android:layout\_marginEnd="8dp"
+            
+            android:layout\_marginStart="8dp"
+            
+            android:layout\_marginTop="4dp"
+            
+            android:text="fiyat"
+            
+            android:textColor="@android:color/background\_dark"
+            
+            app:layout\_constraintEnd\_toEndOf="parent"
+            
+            app:layout\_constraintStart\_toStartOf="parent"
+            
+            app:layout\_constraintTop\_toTopOf="@+id/spinner" />
+            
+
+        <Button
+        
+            android:id="@+id/ekle"
+            
+            android:layout\_width="69dp"
+            
+            android:layout\_height="48dp"
+            
+            android:layout\_marginBottom="8dp"
+            
+            android:layout\_marginEnd="8dp"
+            
+            android:layout\_marginStart="8dp"
+            
+            android:layout\_marginTop="8dp"
+            
+            android:background="?android:attr/colorActivatedHighlight"
+            
+            android:backgroundTint="?android:attr/colorMultiSelectHighlight"
+            
+            android:text="EKLE"
+            
+            app:layout\_constraintBottom\_toBottomOf="parent"
+            
+            app:layout\_constraintEnd\_toEndOf="parent"
+            
+            app:layout\_constraintHorizontal\_bias="0.97"
+            
+            app:layout\_constraintStart\_toStartOf="parent"
+            
+            app:layout\_constraintTop\_toTopOf="parent"
+            
+            tools:ignore="OnClick" />
+            
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.v7.widget.CardView>
+
+
+
+
+\subsubsection{Özet Sayfasý Tasarým Kodlarý}
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout 
+
+xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    
+    xmlns:tools="http://schemas.android.com/tools"
+    
+    android:layout\_width="match\_parent"
+    
+    android:layout\_height="match\_parent"
+    
+    android:background="@android:color/holo\_orange\_light"
+    
+    android:backgroundTint="?android:attr/colorPressedHighlight"
+    
+    tools:context="com.example.zeynep.bottombar.Activitys.OzetHesap">
+
+    
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rccyl"
+        
+        android:layout\_width="324dp"
+        
+        android:layout\_height="282dp"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.008" />
+        
+
+    <Button
+    
+        android:id="@+id/oksiparis"
+        
+        android:layout\_width="wrap\_content"
+        
+        android:layout\_height="wrap\_content"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:background="?android:attr/colorActivatedHighlight"
+        
+        android:text="tamamla"
+        
+        android:textColor="?android:attr/colorForeground"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.97"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="1.0" />
+        
+
+    <TextView
+    
+        android:id="@+id/textView2"
+        
+        android:layout\_width="wrap\_content"
+        
+        android:layout\_height="wrap\_content"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:text="toplam fiyat"
+        
+        android:textColor="@color/colorPrimaryDark"
+        
+        android:textColorLink="@color/colorPrimaryDark"
+        
+        android:textSize="18sp"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.088"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.644" />
+        
+
+    <TextView
+    
+        android:id="@+id/ozethesap"
+        
+        android:layout\_width="83dp"
+        
+        android:layout\_height="21dp"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:text="TextView"
+        
+        android:textColor="@color/colorPrimaryDark"
+        
+        android:textColorHighlight="@color/colorPrimaryDark"
+        
+        android:textColorLink="@color/colorPrimaryDark"
+        
+        android:textSize="18sp"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.54"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.647" />
+        
+
+    <Spinner
+    
+        android:id="@+id/spinner2"
+        
+        android:layout\_width="119dp"
+        
+        android:layout\_height="38dp"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:background="?android:attr/colorMultiSelectHighlight"
+        
+        android:popupBackground="@android:color/holo\_orange\_light"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.502"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.768" />
+        
+
+    <TextView
+    
+        android:id="@+id/textView4"
+        
+        android:layout\_width="wrap\_content"        
+        
+        android:layout\_height="wrap\_content"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:text="masa no seç"
+        
+        android:textColor="@color/colorPrimaryDark"
+        
+        android:textColorLink="@color/colorPrimaryDark"
+        
+        android:textSize="18sp"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.083"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.746" />
+        
+</android.support.constraint.ConstraintLayout>
+
+
+
+\subsubsection{Ýçerik Sayfasý Tasarýmý}
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout 
+
+xmlns:android="http://schemas.android.com/apk/res/android"
+   
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    
+    xmlns:tools="http://schemas.android.com/tools"
+    
+    android:layout\_width="match\_parent"
+    
+    android:layout\_height="match\_parent"
+    
+    android:background="@drawable/r4"
+    
+    tools:context="com.example.zeynep.bottombar.Activitys.Icerik">
+
+
+    <android.support.v7.widget.RecyclerView
+       
+        android:id="@+id/rcy"
+        android:layout\_width="380dp"
+        
+        android:layout\_height="414dp"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"        
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.0" />
+        
+
+    <Button
+    
+        android:id="@+id/tamamla"
+        
+        android:layout\_width="wrap\_content"
+        
+        android:layout\_height="wrap\_content"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:background="@color/colorPrimaryDark"
+        
+        android:text="tamamla"
+        
+        android:textColor="@android:color/background\_light"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.132"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.982" />
+        
+
+    <Button
+    
+        android:id="@+id/devam"
+        
+        android:layout\_width="wrap\_content"
+        
+        android:layout\_height="wrap\_content"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:background="@color/colorPrimaryDark"
+        
+        android:text="devam"
+        
+        android:textColor="@android:color/background\_light"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.842"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.982" />
+        
+</android.support.constraint.ConstraintLayout>
+
+
+
+\subsubsection{Sipariþi Onaylama Sayfasý Tasarýmý}
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout 
+
+xmlns:android="http://schemas.android.com/apk/res/android"
+    
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    
+    xmlns:tools="http://schemas.android.com/tools"
+    
+    android:layout\_width="match\_parent"
+    
+    android:layout\_height="match\_parent"
+    
+    android:background="@drawable/r4"
+    
+    android:backgroundTint="@drawable/r4"
+    
+    tools:context="com.example.zeynep.bottombar.Activitys.Siparisler">
+
+    <TextView
+    
+        android:id="@+id/textView3"
+        
+        android:layout\_width="359dp"
+        
+        android:layout\_height="397dp"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:text="TextView"
+        
+        android:textColor="@color/colorPrimary"
+        
+        android:textSize="50sp"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.089"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.017" />
+        
+
+    <Button
+    
+        android:id="@+id/button"
+        
+        android:layout\_width="wrap\_content"
+        
+        android:layout\_height="wrap\_content"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:background="?android:attr/colorActivatedHighlight"
+        
+        android:text="sipariþ bitti"
+        
+        android:textColor="?attr/actionModeSplitBackground"
+        
+        android:textColorLink="@android:color/background\_dark"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.809"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.93" />
+        
+</android.support.constraint.ConstraintLayout>
+
+
+
+\subsubsection{Kasa Personel Giriþ  Sayfasý Tasarým Kodlarý}
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    
+    xmlns:tools="http://schemas.android.com/tools"
+    
+    android:layout\_width="match\_parent"
+    
+    android:layout\_height="match\_parent"
+    
+    tools:context="com.example.zeynep.bottombar.Fragments.LoginFragmentKasa">
+
+    <!-- TODO: Update blank fragment layout -->
+    
+    <LinearLayout
+    
+        android:layout\_width="match\_parent"
+        
+        android:layout\_height="match\_parent"
+        
+        android:background="@drawable/r4"
+        
+        android:orientation="vertical">
+
+        <TextView
+        
+            android:layout\_width="match\_parent"
+            
+            android:layout\_height="wrap\_content"
+            
+            android:layout\_marginTop="10dp"
+            
+            android:gravity="center"
+            
+            android:text="Kasa Personel Giriþi"
+            
+            android:textColor="@color/colorPrimaryDark"
+            
+            android:textSize="30dp" />
+            
+
+        <LinearLayout
+        
+            android:layout\_width="match\_parent"
+            
+            android:layout\_height="wrap\_content"
+            
+            android:layout\_marginLeft="15dp"
+            
+            android:layout\_marginRight="15dp"
+            
+            android:layout\_marginTop="30dp"
+            
+            android:gravity="center"
+            
+            android:orientation="horizontal"
+            
+            android:weightSum="2">
+            
+
+            <TextView
+            
+                android:layout\_width="0dp"
+                
+                android:layout\_height="wrap\_content"
+                
+                android:layout\_weight="0.5"
+                
+                android:text="Kullanýcý Adý"
+                
+                android:textColor="@color/colorPrimaryDark"
+                
+                android:textColorLink="@android:color/background\_dark" />
+                
+
+            <EditText
+            
+                android:id="@+id/kullaniciadi"
+                
+                android:layout\_width="0dp"
+                
+                android:layout\_height="wrap\_content"
+                
+                android:layout\_weight="1.5"
+                
+                android:hint=""
+                
+                android:textColor="@color/colorPrimaryDark"
+                
+                android:textColorLink="@android:color/background\_dark" />
+                
+        </LinearLayout>
+        
+
+        <LinearLayout
+        
+            android:layout\_width="match\_parent"
+            
+            android:layout\_height="wrap\_content"
+            
+            android:layout\_marginLeft="15dp"
+            
+            android:layout\_marginRight="15dp"
+            
+            android:layout\_marginTop="60dp"
+            
+            android:gravity="center"
+            
+            android:orientation="horizontal"
+            
+            android:weightSum="2">
+
+            <TextView
+            
+                android:id="@+id/textView"
+                
+                android:layout\_width="0dp"
+                
+                android:layout\_height="wrap\_content"
+                
+                android:layout\_weight="0.5"
+                
+                android:text="Þifre"
+                
+                android:textColor="@color/colorPrimaryDark"
+                
+                android:textColorLink="@android:color/background\_dark" />
+
+            <EditText
+            
+                android:id="@+id/sifre"
+                
+                android:layout\_width="0dp"
+                
+                android:layout\_height="wrap\_content"
+                
+                android:layout\_weight="1.5"
+                
+                android:inputType="textPassword"
+                
+                android:textColor="@color/colorPrimaryDark"
+                
+                android:textColorLink="@android:color/background\_dark" />
+
+        </LinearLayout>
+        
+
+        <Button
+            android:id="@+id/girisbtn"
+            
+            android:layout\_width="110dp"
+            
+            android:layout\_height="wrap\_content"            
+            
+            android:layout\_gravity="center"
+            
+            android:layout\_marginLeft="80dp"
+            
+            android:layout\_marginRight="80dp"
+            
+            android:layout\_marginTop="100dp"
+            
+            android:background="?android:attr/colorActivatedHighlight"
+            
+            android:text="Giriþ Yap"
+            
+            android:textAllCaps="false"
+            
+            android:textColor="@android:color/background\_dark" />
+
+    </LinearLayout>
+
+</FrameLayout>
+
+\subsubsection{Kasadaki Masa Sayfasý Tasarým Kodlarý}
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout 
+
+xmlns:android="http://schemas.android.com/apk/res/android"
+    
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    
+    xmlns:tools="http://schemas.android.com/tools"
+    
+    android:layout\_width="wrap\_content"
+    
+    android:layout\_height="wrap\_content"
+    
+    android:background="?android:attr/colorActivatedHighlight">
+
+    <Button
+    
+        android:id="@+id/masa"
+        
+        android:layout\_width="96dp"
+        
+        android:layout\_height="118dp"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:background="?android:attr/colorActivatedHighlight"
+        
+        android:text="0"
+        
+        android:textSize="30sp"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.029"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.021" />
+        
+</android.support.constraint.ConstraintLayout>
+
+
+
+
+
+  
+\subsubsection{Kasa Hesap Sayfasý Tasarým Kodlarý}
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout 
+
+xmlns:android="http://schemas.android.com/apk/res/android"
+    
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    
+    xmlns:tools="http://schemas.android.com/tools"
+    
+    android:layout\_width="match\_parent"
+    
+    android:layout\_height="match\_parent"
+    
+    tools:context="com.example.zeynep.bottombar.Activitys.KasaHesap">
+
+
+    <Button
+    
+        android:id="@+id/buttonn"
+        
+        android:layout\_width="wrap\_content"
+        
+        android:layout\_height="wrap\_content"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:background="?android:attr/colorEdgeEffect"
+        
+        android:text="hesap alýndý"
+        
+        android:textColor="@android:color/background\_dark"
+        
+        android:textSize="12sp"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.932" />
+        
+
+    <TextView
+    
+        android:id="@+id/textView4"
+        
+        android:layout\_width="106dp"
+        
+        android:layout\_height="43dp"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:text="TextView"
+        
+        android:textColor="@color/colorPrimaryDark"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.969"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.811" />
+        
+
+    <TextView
+    
+        android:id="@+id/textView5"
+        
+        android:layout\_width="106dp"
+        
+        android:layout\_height="43dp"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:text="Toplam Tutar:"
+        
+        android:textColor="@color/colorPrimaryDark"
+        
+        android:textColorHighlight="@color/colorPrimaryDark"
+        
+        android:textColorLink="@color/colorPrimaryDark"        
+        
+        android:textSize="16dp"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.501"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.811" />
+        
+
+    <TextView
+    
+        android:id="@+id/textView6"
+        
+        android:layout\_width="368dp"
+        
+        android:layout\_height="359dp"
+        
+        android:layout\_marginBottom="8dp"
+        
+        android:layout\_marginEnd="8dp"
+        
+        android:layout\_marginStart="8dp"
+        
+        android:layout\_marginTop="8dp"
+        
+        android:text="TextView"
+        
+        android:textColor="@color/colorPrimaryDark"
+        
+        android:textSize="18sp"
+        
+        app:layout\_constraintBottom\_toBottomOf="parent"
+        
+        app:layout\_constraintEnd\_toEndOf="parent"
+        
+        app:layout\_constraintHorizontal\_bias="0.0"
+        
+        app:layout\_constraintStart\_toStartOf="parent"
+        
+        app:layout\_constraintTop\_toTopOf="parent"
+        
+        app:layout\_constraintVertical\_bias="0.0" />
+        
+
+</android.support.constraint.ConstraintLayout>
+
+
+
+
+
+
+
+
+

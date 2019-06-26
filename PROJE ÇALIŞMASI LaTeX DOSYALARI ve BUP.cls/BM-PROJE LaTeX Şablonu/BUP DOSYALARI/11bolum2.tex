@@ -1,0 +1,178 @@
+\section{PROJE'NÝN TASARIM AÞAMALARI}\label{S:3}
+Bu bölümde yapýlan ilk olarak uygulamanýn veritabaný kýsmýndan bilgiler verilecektir. Ýkinci olarak  uygulamanýn yazýldýðý program ve veritabýný biribirine baðlayan Php kodlarýndan bahsedilecektir. Üçüncü olarakta uygulamayý oluþtururken karþý karþýya kalýnan hatalardan bahsedilecektir. Ve son olarakta uygulamanýn ekran görüntüsü konularak bu sayfalarýn ne amaçla yapýldýðýna dair kýsa bilgilendirmeler yapýlacaktýr.
+\subsection{Veritabaný }\label{ss:1}
+\qquad Veritabaný olarak PhpMyAdmin kulalnýlmasýnýn sebebi internet üzerinden MYSQL veritabaný yönetimidir.
+
+\qquad  Bu program aracýlýðý ile veritabanýnda tablo oluþturup,  tablolarý silebilir, içerisindeki verileri boþaltabilir veya ilgili tablo verisini güncelleyip,  düzenlenebilir. Aslýnda bu cümle o kadar çok uzatýlabilir ki. Veritabaný ile ilgili akla gelebilecek her türlü iþlemi phpmyadmin adý verilen program sayesinde yapýlabilir. Sadece veri giriþ iþlemlerini ve bazý sorgulamalarý web sayfalarýndaki arayüzler sayesinde gerçekleþtirilir. Bunun haricinde arka planda harýl harýl çalýþan bu muazzam yapýlara doðrudan ulaþmak istenilirse phpmyadmin veya bu program muadilinde bir baþka veritabaný yönetim programýna ihtiyaç olacaktýr.Bu projede XAMPP kullanýlmaktadýr. 
+ 
+\qquad  Bu proje için PhpMyAdmin ve Android Studio birbirine baðlanarak kullanýlacaktýr.
+ 
+ \qquad Php kullanýlmasýndaki sebep ise personel bilgilerinin yer almasý ve uygulamanýn güvenliðinin arttýrýlmak istenmesidir.Php kodlarýnýn yazýlmasý için tercih edilen Sublime Text'dir.
+ 
+
+ \subsubsection{Veritabanýna Giriþ}
+ Proje içinde kullanýlacak olan veri tabanýný oluþturmak için PhpMyAdmin'e giriþ yapýlarak veritabaný oluþturulmuþtur. Þekil 4'te giriþ sayfasý görülmektedir.
+ 
+ 
+ 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{php}
+%Bu komutla resim dosyamýzý yüklüyoruz.
+
+\centering
+Þekil 4:Veritabanýna Giriþ
+\end{figure}
+
+
+Buradan giriþ yapýlarak yeni bir restaurant adýnda veritabaný oluþturuldu. Oluþturulan veritabaný  dört tablodan oluþmaktadýr. Bunlar; ürünler, sipariþler, personel ve masalar tablolarýdýr. Ürünler tablosunun içerisinde menüde bulunan yemek isimleri, kategorileri ve fiyat bilgileri bulunmaktadýr. Personel tablosunda ise personel adý, soyadý , telefonu, emaili ve sisteme giriþ yapacaðý zaman gerekli olan þifre bilgisi yer almaktadýr. Masalarda ise masano bilgisi tutulmaktadýr. Sipariþ tablosundaysa masano, sipariþ detayý ve toplam tutar yer almaktadýr.Veritabaný tablolarý Þekil 5'te görülmektedir.
+
+ 
+ \begin{figure}[H]
+ 
+ 
+\centering
+\includegraphics[scale=0.8]{restaurant}
+%Bu komutla resim dosyamýzý yüklüyoruz.
+
+\centering
+Þekil 5:Veritabaný Tablolarý
+\end{figure}
+
+
+ \subsubsection{Veritabanýna Tablo Ekleme}
+ 
+ Oluþturulan veritabanýndaki tablolara veri  ekleyerek uygulamada kullanacaðýmýz alanlar oluþturuldu. Þekil 6'da oluþturulan ürün tablosunun sütunlarý  görülmektedir.
+ 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{sekil6}
+%Bu komutla resim dosyamýzý yüklüyoruz.
+
+\centering
+Þekil 6:Ürün Tablosu
+\end{figure}
+ 
+  
+   \subsection{Php Ýle Baðlantý}\label{ss:2}
+Php kodlarý ile  veitabanýna baðlanarak Android Studio'da istenen veriler çekilir. Burada uygulama geliþtiricilerin bildiði ama bu iþe yani baþlayan insanlarýn karýþtýrdýðý bir durum vardýr. Php ile veritabanýndan bilgiyi çekip Android Studio'ya aktarabileceðimiz gibi   Android Studio'dan bilgi çekip veritabanýna da aktarma yapýlabilir.  
+  \subsubsection{Menü Sayfasý} 
+ Uygulama ile veritabanýna baðlanýlýr.  Sonra müþteriler için menü kýsmý devreye girer ve seçilen  kategoriye göre veritabanýnda kayýtlý bilgi yoksa sistem hata mesajý verir. Var ise sistem baþlatýlmýþ olur.Oluþturulan bu php dosyasýný siteye yükledikten sonra menü sayfasýnýn tasarýmýna geçilir.
+   \begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{a}
+%Bu komutla resim dosyamýzý yüklüyoruz.
+
+\centering
+
+Bu þekilde veritabanýna baðlantýsý gerçekleþtirilir.
+\end{figure}
+
+Baðlantý gerçekleþtikten sonra Android Studio'da seçilen karatere göre veritabanýndaki ürün çekilir. 
+     \begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{b}
+%Bu komutla resim dosyamýzý yüklüyoruz.
+
+\centering
+Seçilen kategoriye göre ürün tablosundaki ürün çekilir.
+\end{figure}
+
+  
+     \subsubsection{Mutfak Sipariþ Sayfasý}\label{ss:6}
+     Uygulama ile veritabanýna baðlandýktan sonra giriþ ekranýnýn tanýmlamalarý, kullanýcý adý ve þifresinin eþleþme durumu veritabanýndan kontrol ediliyor. Kayýt yok ise ekrana hata mesajý döndürüyor. Var ise siteme giriþ yapýlýyor. Bundan sonra sistemde masa numarasýna göre sipariþ çekiliyor. Oluþturulan bu php dosyasýný siteye yükledikten sonra giriþ sayfasýnýn tasarýmýna geçilir.
+        \begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{c}
+%Bu komutla resim dosyamýzý yüklüyoruz.
+
+\centering
+
+\end{figure}
+Sipariþler tablosuna ulaþýldýðýnda masa numarasýna göre sipariþ detayý çekilir. 
+\newpage
+\subsection{Uygulama Ekran Görüntüleri}
+Uygulamam 3 kýsýmdan oluþmaktadýr. Ýlki menü, ikincisi mutfak ve üçüncüsü kasadýr.
+\subsubsection{Menü Ekraný}
+Uygulamaya girildiðinde ilk karþýmýza menü kýsmý çýkar. Þekil 10 'da menü ekraný görülmektedir. Buradan istediðimiz  kategoriden istenilen  ürün seçilerek özet menüsüne gelinir.
+     \begin{figure}[H]
+     \centering
+\includegraphics[scale=0.2]{menu}
+
+\centering
+Þekil 10:Menü Ekraný
+\end{figure}
+\subsubsection{Ürünler Ekraný}
+Burada sipariþi devam ettirebilmek için devam butonu konuldu. Bu buton sayesinde ilk kýsma gelir. Ýstenilen ürünler seçilmeye devam edilir. Þekil 11'de görülmektedir.
+
+\begin{figure}[H]
+     \centering
+\includegraphics[scale=0.2]{menu1}
+
+\centering
+Þekil 11:Ürün Seçme
+\end{figure}
+\newpage
+\subsubsection{Sipariþ Tamamlama Ekraný}
+
+Müþteri sipariþlerini bitirdiðinde ürün seçme kýsmýndaki tamamla butonuna bastýðýnda sipariþ tamamlama sayfasý gelir ve burada ne sipariþ verildiðini, toplam ödenecek tutarý görünür. Ayrýyeten bu kýsýmda müþteriden masa numarasý bilgisinin girilmesi istenmektedir. Bu iþlemide gerçekleþtiren müþteri için tek bir tuþa basmak yeterli olmuþ olur artýk. Veritabanýna müþterinin sipariþleri kaydolur ve bu sipariþler mutfak ve kasa kýsmýndan giriþ yapan personellere iletilmiþ olunur.
+
+
+
+Sipariþler bittiðinde onaylanýlýr ve sipariþler veritabanýndaki sipariþ tablosuna eklenir. Þekil 12'de görülmektedir.
+
+\begin{figure}[H]
+     \centering
+\includegraphics[scale=0.2]{menu2}
+
+\centering
+Þekil 12:Menü Sipariþi Tamamlama Kýsmý
+\end{figure}
+\newpage
+\subsubsection{Mutfak Giriþ Ekraný}
+Uygulamanýn ikinci kýsmý olan mutfak kýsmýna geçilecek olunursa, burada mutfak personelinin kullanýcý adý ve þifresini yazarak sisteme giriþ yapmasýný istenilir. Bu sayede personel harici bir kiþinin uygulamanýn bu alanýna eriþmesini engellenmiþ olunur. Þekil 13'de gösterilmektedir.
+   \begin{figure}[H]
+     \centering
+\includegraphics[scale=0.2]{mutfak}
+
+\centering
+Þekil 13:Mutfak Giriþ Ekraný
+\end{figure}
+\newpage
+\subsubsection{Masa Ekraný}
+Personel giriþ yaptýktan sonra karþýsýna Þekil 14'deki ekran gelmektedir. Buradan  masalarýn isimlerinden hangi masanýn sipariþi ne o öðremiþ olunur.
+ \begin{figure}[H]
+  \centering
+\includegraphics[scale=0.2]{mutfak1}
+
+\centering
+Þekil 14:Mutfak Masa Ekraný
+\end{figure}
+\newpage
+\subsubsection{Masa Sipariþ ekraný}
+Giriþ yapan personel herhangibir masaya týkladýðýnda o masanýn sipariþleri görülmektedir. Þekil 15'te ekran gözükmektedir.
+\begin{figure}[H]
+     \centering
+\includegraphics[scale=0.2]{mutfak2}
+
+\centering
+Þekil 15:Masa Sipariþ Ekraný
+\end{figure}
+
+\subsubsection{Kasa Giriþ Ekraný}
+ Uygulamanýn üçüncü kýsmý olan kasa kýsmýna geçilecek olursa, burada kasa personelinin kullanýcý adý ve þifresini yazarak sisteme giriþ yapmasýný istenilir. Bu sayede personel harici bir kiþinin uygulamanýn bu alanýna eriþmesini engellenmiþ olunur. Bu tasarým mutfak kýsmýndaki giriþ ekraný ile ayný olduðu için ekan görüntüsü konulmamýþtýr.
+
+\subsubsection{Masa Ekraný}
+Personel giriþ yaptýktan sonra mutfak masa ekranýnýn aynýsý gelmektedir.
+\subsubsection{Kasa Hesap Ekraný}
+Buradan  masalarýn isimlerinden hangi masanýn sipariþi ve hesabýnýn ne olduðunu öðremiþ olunur.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.2]{kasa2}
+
+\centering
+Þekil 16:Kasa Hesap Ekraný
+\end{figure}
+
+
+ 

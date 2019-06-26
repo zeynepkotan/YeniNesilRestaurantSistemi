@@ -1,0 +1,10 @@
+1- Ýç ve dýþ kapak ayný þekilde çalýþmanýza uygun olarak  doldurulacaktýr.
+
+2- Kullanýlmayan bölümler, örneðin, simge ve kýsaltmalar kullanýlmadýysa, 0Bmbitirme.tex dosyasýnda \include{9simge_kisaltma} kodunun baþýna % konulup yani, %\include{9simge_kisaltma} kodun çalýþmasý engellecek. 
+
+3- Önsöz, özet, abstract, kaynaklar gibi bölümlerde yazým örneði verilmiþtir. Buralar sizin Bitirme tezi/Proje I-II çalýþmanýza göre þekillendirilecek.
+
+4- Giriþten sonra 2 bölüm açýlmýþtýr bu bölümler istenildiðinde sizin tarafýnýzdan arttýrýlabilir. Bu bölümlerde BAÞLIK yerine sizin bölüm için uygun gördüðünüz baþlýk yazýlacaktýr.
+
+5- Özgeçmiþ sayfasý doldurulacaktýr.
+
